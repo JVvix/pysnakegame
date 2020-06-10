@@ -34,13 +34,17 @@ segments = []
 
 # function
 def go_up():
-    head.direction = "up"
+    if head.direction != "down":
+        head.direction = "up"
 def go_down():
-    head.direction = "down"
+    if head.direction != "up": 
+        head.direction = "down"
 def go_left():
-    head.direction = "left"
+    if head.direction != "right":
+        head.direction = "left"
 def go_right():
-    head.direction = "right"
+    if head.direction != "left":
+        head.direction = "right"
 def go_quit():
     turtle.bye()
 
@@ -111,19 +115,19 @@ while True:
 
     move()
 
-    # check for collison with body segments
+# check for head collison with body segments
     for segment in segments:
         if segment.distance(head) < 20:
             time.sleep(1)
             head.goto(0,0)
-            head.direction = "stop"
+            head.direction = "stop" 
 
-        # hide segments
-        for segment in segments:
-            segment.goto(1000, 1000)
-            
-        segments.clear()
+            # hide the segments
+            for segment in segments:
+                segment.goto(1000, 1000)
 
+            # clear segments
+            segments.clear()
 
     time.sleep(delay)
 
