@@ -69,6 +69,19 @@ wn.onkey(go_quit, "q")
 # main game loop
 while True:
     wn.update()
+    
+    # check for a collison
+
+    if head.xcor() > 230 or head.xcor() < -230 or head.ycor() > 230 or head.ycor() < -230:
+        time.sleep(1)
+        head.goto(0,0)
+        head.direction = "stop"
+        # hide segments
+        for segment in segments:
+            segment.goto(1000, 1000)
+            
+        segments.clear()
+
 # check for a collison with food
     if head.distance(food) < 20:     
         # move food to another random spot
