@@ -1,6 +1,7 @@
 # pygame snake youtube tutorial
 
 import turtle
+import random
 import time
 
 delay = 0.1
@@ -9,7 +10,7 @@ delay = 0.1
 wn = turtle.Screen()
 wn.title("Snake Game")
 wn.bgcolor("black")
-wn.setup(width=600, height=600)
+wn.setup(width=500, height=500)
 wn.tracer(0)
 
 # snake head
@@ -20,6 +21,14 @@ head.color("green")
 head.penup()
 head.goto(0,0)
 head.direction = "stop"
+
+# snake food
+food = turtle.Turtle()
+food.speed(0)
+food.shape("square")
+food.color("red")
+food.penup()
+food.goto(0,100)
 
 # function
 def go_up():
@@ -55,6 +64,11 @@ wn.onkey(go_right, "d")
 # main game loop
 while True:
     wn.update()
+
+    if head.distance(food) < 20:     
+        x = random.randint(-14, 14)*20
+        y = random.randint(-14, 14)*20
+        food.goto(x,y)
 
     move()
 
