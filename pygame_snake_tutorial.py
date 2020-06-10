@@ -25,10 +25,12 @@ head.direction = "stop"
 # snake food
 food = turtle.Turtle()
 food.speed(0)
-food.shape("square")
+food.shape("circle")
 food.color("red")
 food.penup()
 food.goto(0,100)
+
+segments = []
 
 # function
 def go_up():
@@ -39,6 +41,8 @@ def go_left():
     head.direction = "left"
 def go_right():
     head.direction = "right"
+def go_quit():
+    turtle.bye()
 
 def move():
     if head.direction == "up":
@@ -60,15 +64,36 @@ wn.onkey(go_up, "w")
 wn.onkey(go_down, "s")
 wn.onkey(go_left, "a")
 wn.onkey(go_right, "d")
+wn.onkey(go_quit, "q")
 
 # main game loop
 while True:
     wn.update()
-
+# check for a collison with food
     if head.distance(food) < 20:     
-        x = random.randint(-14, 14)*20
-        y = random.randint(-14, 14)*20
+        # move food to another random spot
+        x = random.randint(-230, 230)
+        y = random.randint(-230, 230)  
         food.goto(x,y)
+        # add a segment
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.shape("square")
+        new_segment.color("green")
+        new_segment.penup()
+        segments.append(new_segment)
+
+    # move the end segements in order
+    for index in range(len(segments)-1, 0, -1):
+        x = segments[index-1].xcor()
+        y = segments[index-1].ycor()
+        segments[index].goto(x,y)
+    
+    # move segment 0 to where the head is
+    if len(segments) > 0:
+        x = head.xcor()
+        y = head.ycor()
+        segments[0].goto(x, y)
 
     move()
 
