@@ -13,7 +13,7 @@ high_score = 0
 
 # screen
 wn = turtle.Screen()
-wn.title("Snake Game")
+wn.title("Snake Game - press 'Q' to quit")
 wn.bgcolor("black")
 wn.setup(width=500, height=500)
 wn.tracer(0)
@@ -83,7 +83,7 @@ wn.onkey(go_up, "w")
 wn.onkey(go_down, "s")
 wn.onkey(go_left, "a")
 wn.onkey(go_right, "d")
-wn.onkey(go_quit, "q")
+wn.onkey(go_quit, "Q")
 
 # main game loop
 while True:
@@ -92,6 +92,7 @@ while True:
     # check for a collison
 
     if head.xcor() > 235 or head.xcor() < -235 or head.ycor() > 235 or head.ycor() < -235:
+        winsound.PlaySound("snakehit2.wav", winsound.SND_ASYNC)
         time.sleep(1)
         head.goto(0,0)
         head.direction = "stop"
@@ -109,10 +110,11 @@ while True:
         pen.write("Score: {} Highscore: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
         # reset delay 
         delay = 0.1
-
+        # reset food's area
+        food.goto(50, 0)
 # check for a collison with food
     if head.distance(food) < 20:     
-        winsound.PlaySound("C:\...\aud_chomp.wav", winsound.SND_ASYNC)
+        winsound.PlaySound("aud_chomp.wav", winsound.SND_ASYNC)
         # move food to another random spot
         x = random.randint(-235, 235)
         y = random.randint(-235, 235)  
@@ -173,6 +175,9 @@ while True:
 
             # reset the delay
             delay = 0.1
+
+            # reset the food's area
+            food.goto(50, 0)
     time.sleep(delay)
 
 wn.mainloop()
