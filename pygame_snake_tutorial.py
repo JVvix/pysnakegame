@@ -3,8 +3,13 @@
 import turtle
 import random
 import time
+import winsound
 
 delay = 0.1
+
+# Score
+score = 0
+high_score = 0
 
 # screen
 wn = turtle.Screen()
@@ -31,6 +36,16 @@ food.penup()
 food.goto(0,100)
 
 segments = []
+
+# Pen
+pen = turtle.Turtle()
+pen.speed(0)
+pen.shape("square")
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0, -235)
+pen.write("Score: 0 Highscore: 0", align="center", font=("Courier", 24, "normal"))
 
 # function
 def go_up():
@@ -76,7 +91,7 @@ while True:
     
     # check for a collison
 
-    if head.xcor() > 230 or head.xcor() < -230 or head.ycor() > 230 or head.ycor() < -230:
+    if head.xcor() > 235 or head.xcor() < -235 or head.ycor() > 235 or head.ycor() < -235:
         time.sleep(1)
         head.goto(0,0)
         head.direction = "stop"
@@ -87,11 +102,20 @@ while True:
             
         segments.clear()
 
+        # reset score
+        score = 0
+        # change the score
+        pen.clear()
+        pen.write("Score: {} Highscore: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+        # reset delay 
+        delay = 0.1
+
 # check for a collison with food
     if head.distance(food) < 20:     
+        winsound.PlaySound("C:\...\aud_chomp.wav", winsound.SND_ASYNC)
         # move food to another random spot
-        x = random.randint(-230, 230)
-        y = random.randint(-230, 230)  
+        x = random.randint(-235, 235)
+        y = random.randint(-235, 235)  
         food.goto(x,y)
         # add a segment
         new_segment = turtle.Turtle()
@@ -100,6 +124,17 @@ while True:
         new_segment.color("green")
         new_segment.penup()
         segments.append(new_segment)
+
+        # increase the score
+        score += 1
+
+        if score > high_score:
+            high_score = score
+
+        pen.clear()
+        pen.write("Score: {} Highscore: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+        #shorten the delay
+        delay -= 0.002
 
     # move the end segements in order
     for index in range(len(segments)-1, 0, -1):
@@ -129,6 +164,15 @@ while True:
             # clear segments
             segments.clear()
 
+            # reset the score
+            score = 0
+
+            # change the score
+            pen.clear()
+            pen.write("Score: {} Highscore: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
+
+            # reset the delay
+            delay = 0.1
     time.sleep(delay)
 
 wn.mainloop()
