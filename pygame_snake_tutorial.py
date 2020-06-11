@@ -6,6 +6,7 @@ import time
 import winsound
 
 delay = 0.1
+already_clapped = False
 
 # Score
 score = 0
@@ -46,6 +47,16 @@ pen.penup()
 pen.hideturtle()
 pen.goto(0, -235)
 pen.write("Score: 0 Highscore: 0", align="center", font=("Courier", 24, "normal"))
+# Pen2
+pen2 = turtle.Turtle()
+pen2.speed(0)
+pen2.shape("square")
+pen2.color("yellow")
+pen2.penup()
+pen2.hideturtle()
+pen2.goto(0, 220)
+pen2.write("Reached New Highscore!", align="center", font=("Courier", 24, "normal"))
+pen2.clear()
 
 # function
 def go_up():
@@ -97,6 +108,9 @@ while True:
         head.goto(0,0)
         head.direction = "stop"
 
+        # change already_clapped to false
+        already_clapped = False
+
         # hide segments
         for segment in segments:
             segment.goto(1000, 1000)
@@ -132,6 +146,9 @@ while True:
 
         if score > high_score:
             high_score = score
+            if not already_clapped and score > 3:
+                winsound.PlaySound("applause10.wav", winsound.SND_ASYNC)
+                already_clapped = True
 
         pen.clear()
         pen.write("Score: {} Highscore: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
@@ -155,6 +172,7 @@ while True:
 # check for head collison with body segments
     for segment in segments:
         if segment.distance(head) < 20:
+            winsound.PlaySound("snakehit2.wav", winsound.SND_ASYNC)
             time.sleep(1)
             head.goto(0,0)
             head.direction = "stop" 
@@ -173,6 +191,8 @@ while True:
             pen.clear()
             pen.write("Score: {} Highscore: {}".format(score, high_score), align="center", font=("Courier", 24, "normal"))
 
+            # change already_clapped to false
+            already_clapped = False
             # reset the delay
             delay = 0.1
 
